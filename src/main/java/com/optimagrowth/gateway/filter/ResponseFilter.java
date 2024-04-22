@@ -1,4 +1,4 @@
-package com.optimagrowth.gateway.filters;
+package com.optimagrowth.gateway.filter;
 
 import static com.optimagrowth.gateway.util.FilterUtil.CORRELATION_ID;
 
