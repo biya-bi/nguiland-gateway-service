@@ -9,6 +9,7 @@ COPY src ./src
 
 FROM base AS package
 RUN ./mvnw package
+COPY scripts ./scripts/
 
 FROM eclipse-temurin:17-jre-jammy AS build
 WORKDIR /target
@@ -23,4 +24,6 @@ COPY --from=build ${OUTPUT_DIR}/dependencies/ ./
 COPY --from=build ${OUTPUT_DIR}/spring-boot-loader/ ./
 COPY --from=build ${OUTPUT_DIR}/snapshot-dependencies/ ./
 COPY --from=build ${OUTPUT_DIR}/application/ ./
-ENTRYPOINT java org.springframework.boot.loader.launch.JarLauncher
+COPY --from=package /app/scripts/ ./scripts/
+
+ENTRYPOINT /opt/app/scripts/run.sh
