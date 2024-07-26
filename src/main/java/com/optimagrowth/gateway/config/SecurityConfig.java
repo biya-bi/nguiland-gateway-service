@@ -5,9 +5,11 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
@@ -20,11 +22,12 @@ class SecurityConfig {
 
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity,
-            ServerAuthenticationEntryPoint entryPoint) {
-        return httpSecurity.authorizeExchange(c -> c.anyExchange().authenticated())
-                .oauth2ResourceServer(c -> c.authenticationEntryPoint(entryPoint).jwt(Customizer.withDefaults()))
+            ServerAuthenticationEntryPoint entryPoint,
+            @Nullable @Value("${ostock.api.authentication.allowedEndpoints:#{null}}") String[] allowedEndpoints) {
+        return httpSecurity.authorizeExchange(spec -> authenticated(spec, allowedEndpoints))
+                .oauth2ResourceServer(spec -> spec.authenticationEntryPoint(entryPoint).jwt(Customizer.withDefaults()))
                 .cors(Customizer.withDefaults())
-                .exceptionHandling(c -> c.authenticationEntryPoint(entryPoint))
+                .exceptionHandling(spec -> spec.authenticationEntryPoint(entryPoint))
                 .build();
     }
 
@@ -42,5 +45,11 @@ class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
+    }
+
+    private AuthorizeExchangeSpec authenticated(AuthorizeExchangeSpec authorizeExchangeSpec, String[] allowedEndpoints) {
+        var spec = allowedEndpoints != null ? authorizeExchangeSpec.pathMatchers(allowedEndpoints).permitAll() : authorizeExchangeSpec;
+
+        return spec.anyExchange().authenticated();
     }
 }
