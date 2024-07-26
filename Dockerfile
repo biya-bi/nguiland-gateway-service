@@ -1,29 +1,9 @@
 # syntax=docker/dockerfile:1
 
-FROM eclipse-temurin:17-jdk-jammy AS base
-WORKDIR /app
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:resolve
-COPY src ./src
+FROM eclipse-temurin:17-jre-jammy
 
-FROM base AS package
-RUN ./mvnw package
-COPY scripts ./scripts/
+WORKDIR /opt/ostock
 
-FROM eclipse-temurin:17-jre-jammy AS build
-WORKDIR /target
-ARG JAR_FILE=/app/target/*.jar
-COPY --from=package ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
+COPY target/*.jar ./gateway-service.jar
 
-FROM eclipse-temurin:17-jre-jammy AS run
-ARG OUTPUT_DIR=/target
-WORKDIR /opt/app
-COPY --from=build ${OUTPUT_DIR}/dependencies/ ./
-COPY --from=build ${OUTPUT_DIR}/spring-boot-loader/ ./
-COPY --from=build ${OUTPUT_DIR}/snapshot-dependencies/ ./
-COPY --from=build ${OUTPUT_DIR}/application/ ./
-COPY --from=package /app/scripts/ ./scripts/
-
-ENTRYPOINT /opt/app/scripts/run.sh
+ENTRYPOINT java -jar ./gateway-service.jar
