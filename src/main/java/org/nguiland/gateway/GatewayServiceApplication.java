@@ -1,4 +1,4 @@
-package com.optimagrowth.gateway;
+package org.nguiland.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

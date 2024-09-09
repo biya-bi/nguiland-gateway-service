@@ -1,4 +1,4 @@
-package com.optimagrowth.gateway.util;
+package org.nguiland.gateway.util;
 
 import java.util.List;
 

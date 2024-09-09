@@ -1,6 +1,6 @@
-package com.optimagrowth.gateway.filter;
+package org.nguiland.gateway.filter;
 
-import static com.optimagrowth.gateway.util.FilterUtil.CORRELATION_ID;
+import static org.nguiland.gateway.util.FilterUtil.CORRELATION_ID;
 
 import java.util.UUID;
 
@@ -10,7 +10,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.optimagrowth.gateway.util.FilterUtil;
+import org.nguiland.gateway.util.FilterUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;

@@ -1,4 +1,4 @@
-package com.optimagrowth.gateway.config;
+package org.nguiland.gateway.config;
 
 import java.util.Arrays;
 

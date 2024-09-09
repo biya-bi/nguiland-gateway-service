@@ -1,4 +1,4 @@
-package com.optimagrowth.gateway.authentication;
+package org.nguiland.gateway.authentication;
 
 import java.nio.charset.StandardCharsets;
 
