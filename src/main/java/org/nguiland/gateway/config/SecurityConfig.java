@@ -10,6 +10,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec;
+import org.springframework.security.config.web.server.ServerHttpSecurity.OAuth2ResourceServerSpec;
+import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerReactiveAuthenticationManagerResolver;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,9 +25,10 @@ class SecurityConfig {
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity,
             ServerAuthenticationEntryPoint entryPoint,
+            JwtConfig jwtConfig,
             @Nullable @Value("${ostock.api.authentication.allowedEndpoints:#{null}}") String[] allowedEndpoints) {
         return httpSecurity.authorizeExchange(spec -> authenticated(spec, allowedEndpoints))
-                .oauth2ResourceServer(spec -> spec.authenticationEntryPoint(entryPoint).jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(configure(entryPoint, jwtConfig))
                 .cors(Customizer.withDefaults())
                 .exceptionHandling(spec -> spec.authenticationEntryPoint(entryPoint))
                 .build();
@@ -52,4 +55,12 @@ class SecurityConfig {
 
         return spec.anyExchange().authenticated();
     }
+
+    private Customizer<OAuth2ResourceServerSpec> configure(ServerAuthenticationEntryPoint entryPoint,
+            JwtConfig jwtConfig) {
+        var resolver = JwtIssuerReactiveAuthenticationManagerResolver
+                .fromTrustedIssuers(jwtConfig.getGoogleIssuerUri(), jwtConfig.getKeycloakIssuerUri());
+        return spec -> spec.authenticationEntryPoint(entryPoint).authenticationManagerResolver(resolver);
+    }
+
 }
