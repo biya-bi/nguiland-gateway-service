@@ -58,8 +58,7 @@ class SecurityConfig {
 
     private Customizer<OAuth2ResourceServerSpec> configure(ServerAuthenticationEntryPoint entryPoint,
             JwtConfig jwtConfig) {
-        var resolver = JwtIssuerReactiveAuthenticationManagerResolver
-                .fromTrustedIssuers(jwtConfig.getGoogleIssuerUri(), jwtConfig.getKeycloakIssuerUri());
+        var resolver = JwtIssuerReactiveAuthenticationManagerResolver.fromTrustedIssuers(jwtConfig.getIssuers());
         return spec -> spec.authenticationEntryPoint(entryPoint).authenticationManagerResolver(resolver);
     }
 

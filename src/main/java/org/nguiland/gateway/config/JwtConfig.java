@@ -9,6 +9,5 @@ import lombok.Data;
 @Configuration
 @ConfigurationProperties(prefix = "spring.security.oauth2.resourceserver.jwt")
 class JwtConfig {
-    private String googleIssuerUri;
-    private String keycloakIssuerUri;
+    private String[] issuers;
 }
