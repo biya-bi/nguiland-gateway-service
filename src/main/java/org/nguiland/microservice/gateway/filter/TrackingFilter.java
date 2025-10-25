@@ -1,16 +1,15 @@
-package org.nguiland.gateway.filter;
+package org.nguiland.microservice.gateway.filter;
 
-import static org.nguiland.gateway.util.FilterUtil.CORRELATION_ID;
+import static org.nguiland.microservice.gateway.util.FilterUtil.CORRELATION_ID;
 
 import java.util.UUID;
 
+import org.nguiland.microservice.gateway.util.FilterUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-
-import org.nguiland.gateway.util.FilterUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;

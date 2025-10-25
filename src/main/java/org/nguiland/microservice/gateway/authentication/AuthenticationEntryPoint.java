@@ -1,4 +1,4 @@
-package org.nguiland.gateway.authentication;
+package org.nguiland.microservice.gateway.authentication;
 
 import java.nio.charset.StandardCharsets;
 

@@ -1,4 +1,4 @@
-package org.nguiland.gateway.config;
+package org.nguiland.microservice.gateway.config;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;

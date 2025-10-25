@@ -1,4 +1,4 @@
-package org.nguiland.gateway.util;
+package org.nguiland.microservice.gateway.util;
 
 import java.util.List;
 
