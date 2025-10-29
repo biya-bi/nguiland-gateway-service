@@ -12,7 +12,7 @@
 	<groupId>org.nguiland.microservice</groupId>
 	<artifactId>gateway-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Gateway Microservice</name>
+	<name>gateway-service</name>
 	<description>Gateway Microservice</description>
 
 	<dependencies>
